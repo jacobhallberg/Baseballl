@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+
+<form method="POST" action="{{url_for('search')}}">
+    {{ form.csrf_token }}
+    <div class="row">
+        <div class="col">{{ form.player_name(class_="form-control", placeholder="Lastname Firstname")}}</div>
+        <input type="submit" class="form-control input-btn col" value="Search">
+    </div>
+</form>
+
+<br>
+{% if player_data is defined %}
+<table class="table">
+    <thread>
+        <tr>
+            <th scope="col">Lastname</th>
+            <th scope="col">Firstname</th>
+            <th scope="col">playerID</th>
+        </tr>
+    </thread>
+    <tbody>
+        {% for player in player_data %}
+        <tr>
+            {% for key, value in player.items() %}
+            <td>{{value}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% if no_player is defined %}
+<br>
+<center> <h4> No player with lastname {{no_player}} found. </h2> </center>
+{% endif %}
+
+{% endblock %}
