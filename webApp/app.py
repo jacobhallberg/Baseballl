@@ -14,7 +14,7 @@ def make_dicts(cursor, row):
                 for idx, value in enumerate(row))
 
 def get_db():
-    file_path = "2019_sample_data.csv"
+    file_path = 'webApp/2019_sample_data.csv'
     table_name = "player_data"
 
     sql = sqlite3.connect(":memory:")
