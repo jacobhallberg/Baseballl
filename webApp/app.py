@@ -8,22 +8,18 @@ import pandas as pd
 app = Flask(__name__)
 app.secret_key = 'super secret key'
 
+FILE_PATH = "2019_sample_data.csv"
+TABLE_NAME = "player_data"
+
+SQL = sqlite3.connect(":memory:")
+
+DF = pd.read_csv(FILE_PATH, index_col=0)
+DF.to_sql(TABLE_NAME, SQL, if_exists="append", index=False)
+SQL.row_factory = make_dicts
 
 def make_dicts(cursor, row):
     return dict((cursor.description[idx][0], value)
                 for idx, value in enumerate(row))
-
-def get_db():
-    file_path = "2019_sample_data.csv"
-    table_name = "player_data"
-
-    sql = sqlite3.connect(":memory:")
-
-    df = pd.read_csv(file_path, index_col=0)
-    df.to_sql(table_name, sql, if_exists="append", index=False)
-    sql.row_factory = make_dicts
-
-    return sql
 
 def query_db(db, query, args=()):
     return db.execute(query, args)
@@ -33,7 +29,6 @@ class SearchForm(FlaskForm):
 
 @app.route("/", methods=["GET", "POST"])
 def search():
-    db = get_db()
     form  = SearchForm()
 
     if form.validate_on_submit():
@@ -43,10 +38,10 @@ def search():
         else:
             lastname, firstname = name[0], " "
             
-        query_result = list(query_db(db, "SELECT * FROM player_data WHERE last = '{}' AND first = '{}';".format(lastname, firstname)))
+        query_result = list(query_db(SQL, "SELECT * FROM player_data WHERE last = '{}' AND first = '{}';".format(lastname, firstname)))
         
         if len(query_result) == 0:
-            query_result = list(query_db(db, "SELECT * FROM player_data WHERE last = '{}';".format(lastname)))
+            query_result = list(query_db(SQL, "SELECT * FROM player_data WHERE last = '{}';".format(lastname)))
 
         if len(query_result) == 0:
             return render_template("search.html", form=form, no_player = lastname)
