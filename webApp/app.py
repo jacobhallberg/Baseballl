@@ -18,7 +18,7 @@ def make_dicts(cursor, row):
                 for idx, value in enumerate(row))
 
 
-DF = pd.read_csv(FILE_PATH, index_col=0)
+DF = pd.read_csv(FILE_PATH, index_col=False)
 DF.to_sql(TABLE_NAME, SQL, if_exists="append", index=False)
 SQL.row_factory = make_dicts
 
@@ -35,9 +35,9 @@ def search():
     if form.validate_on_submit():
         name = form.player_name.data.split(" ")
         if len(name) >= 2:
-            lastname, firstname = name[0], name[1]
+            lastname, firstname = str(name[0]).lower(), str(name[1]).lower()
         else:
-            lastname, firstname = name[0], " "
+            lastname, firstname = str(name[0]).lower(), " "
             
         query_result = list(query_db(SQL, "SELECT * FROM player_data WHERE name_last = '{}' AND name_first = '{}';".format(lastname, firstname)))
         
