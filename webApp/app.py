@@ -39,10 +39,10 @@ def search():
         else:
             lastname, firstname = name[0], " "
             
-        query_result = list(query_db(SQL, "SELECT * FROM player_data WHERE last = '{}' AND first = '{}';".format(lastname, firstname)))
+        query_result = list(query_db(SQL, "SELECT * FROM player_data WHERE name_last = '{}' AND name_first = '{}';".format(lastname, firstname)))
         
         if len(query_result) == 0:
-            query_result = list(query_db(SQL, "SELECT * FROM player_data WHERE last = '{}';".format(lastname)))
+            query_result = list(query_db(SQL, "SELECT * FROM player_data WHERE name_last = '{}';".format(lastname)))
 
         if len(query_result) == 0:
             return render_template("search.html", form=form, no_player = lastname)
