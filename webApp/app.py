@@ -13,13 +13,14 @@ TABLE_NAME = "player_data"
 
 SQL = sqlite3.connect(":memory:")
 
-DF = pd.read_csv(FILE_PATH, index_col=0)
-DF.to_sql(TABLE_NAME, SQL, if_exists="append", index=False)
-SQL.row_factory = make_dicts
-
 def make_dicts(cursor, row):
     return dict((cursor.description[idx][0], value)
                 for idx, value in enumerate(row))
+
+
+DF = pd.read_csv(FILE_PATH, index_col=0)
+DF.to_sql(TABLE_NAME, SQL, if_exists="append", index=False)
+SQL.row_factory = make_dicts
 
 def query_db(db, query, args=()):
     return db.execute(query, args)
