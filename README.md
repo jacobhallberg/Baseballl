@@ -1,3 +1,7 @@
+# Calculation
+The jupyter notebook that contains how we calculated the Specialty Score is at ./scoreCalculation.ipynb.
+Or click [here](https://github.com/jacobhallberg/SpecialtyScore/blob/master/scoreCalculation.ipynb).
+
 # Specialty Score Website
 http://specialtyscore.herokuapp.com/
 
