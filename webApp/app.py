@@ -8,6 +8,7 @@ import pandas as pd
 app = Flask(__name__)
 app.secret_key = 'super secret key'
 
+# FILE_PATH = "./webApp/2014-2018_specialty_score.csv"
 FILE_PATH = "./webApp/2014-2018_specialty_score.csv"
 TABLE_NAME = "player_data"
 
